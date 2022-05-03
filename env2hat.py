@@ -225,11 +225,20 @@ class BMM150:
 
 def run():
 	from machine import I2C
+	from m5stack import lcd
+
 	i2c = I2C(freq=400000, sda=0, scl=26)
 	bmm150 = BMM150(i2c)
-	print("Mag data:")
-	print(bmm150.read_mag_data())
-	return bmm150
+
+	x = y = z = 0
+
+	while True:
+		x, y, z = bmm150.read_mag_data()
+		lcd.clear()
+		lcd.text(10, 10, '{: d}'.format(x))
+		lcd.text(10, 30, '{: d}'.format(y))
+		lcd.text(10, 50, '{: d}'.format(z))
+
 
 
 if __name__ == "__main__":
