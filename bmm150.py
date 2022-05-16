@@ -223,23 +223,33 @@ class BMM150:
 
 
 
-def run():
+def test_m5stickC_envII_hat():
 	from machine import I2C
 	from m5stack import lcd
 
-	i2c = I2C(freq=400000, sda=0, scl=26)
+	HAT_SDA = 0
+	HAT_SCL = 26
+
+	i2c = I2C(freq=400000, sda=HAT_SDA, scl=HAT_SCL)
 	bmm150 = BMM150(i2c)
 
 	x = y = z = 0
+	tx = ty = tz = ''
 
 	while True:
-		x, y, z = bmm150.read_mag_data()
-		lcd.clear()
-		lcd.text(10, 10, '{: d}'.format(x))
-		lcd.text(10, 30, '{: d}'.format(y))
-		lcd.text(10, 50, '{: d}'.format(z))
+		lcd.textClear(10, 10, tx)
+		lcd.textClear(10, 30, ty)
+		lcd.textClear(10, 50, tz)
 
+		x, y, z = bmm150.read_mag_data()
+		tx = '{: d}'.format(x)
+		ty = '{: d}'.format(y)
+		tz = '{: d}'.format(z)
+
+		lcd.text(10, 10, tx)
+		lcd.text(10, 30, ty)
+		lcd.text(10, 50, tz)
 
 
 if __name__ == "__main__":
-	run()
+	test_m5stickC_envII_hat()
